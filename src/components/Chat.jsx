@@ -1592,7 +1592,7 @@ export default function Chat({ onRightRail }) {
         >
           <div className="max-w-[760px] mx-auto">
             {isLanding ? (
-              <div className="w-full min-h-[calc(100dvh-340px)] flex flex-col items-center justify-center px-4">
+              <div className="w-full min-h-[calc(100dvh-340px)] flex flex-col items-center justify-center px-4 pt-25 sm:pt-0">
                 <h1 className="text-[28px] sm:text-[32px] font-semibold text-center mb-6">
                   {headline}
                 </h1>

@@ -190,7 +190,7 @@ function RolePillToggle({ value = "member", onChange, disabled = false, uid }) {
           <motion.div
             layoutId={`rolePill_${uid}`}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 bg-gray-900"
+            className="absolute inset-0 bg-gray-900 rounded-lg"
           />
         )}
         <span className="relative z-10">Admin</span>

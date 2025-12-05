@@ -844,5 +844,5 @@ export async function membershipsSetRole(getIdToken, { uid, role }) {
     },
     body: JSON.stringify({ role }),
   });
-  return handle(res); // returns { ok: true, uid, role }
+  return handle(res); // return { ok: true, uid, role }
 }
