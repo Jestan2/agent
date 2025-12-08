@@ -452,9 +452,14 @@ function SidebarContent({
   closeMobile,
 }) {
   return (
-    <div className="flex h-full flex-col bg-[var(--bg-rail)]">
+     <div className="flex h-full flex-col bg-[var(--bg-rail)]
+                 overflow-y-auto xl:overflow-visible
+                 overscroll-contain [-webkit-overflow-scrolling:touch]">
       {/* HEADER */}
-      <div className="h-14 flex items-center px-3 border-b border-[var(--border)] bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+       <div className="sticky top-0 z-10 h-14 flex items-center px-3
+                 border-b border-[var(--border)]
+                 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60
+                 xl:static">
         <div
           className={[
             "inline-flex items-center gap-2 overflow-hidden",
@@ -529,7 +534,7 @@ function SidebarContent({
       </div>
 
       {/* LISTS */}
-      <div className="px-2 pb-2 overflow-y-auto flex-1">
+      <div className="px-2 pb-2 flex-1 min-h-0 xl:overflow-y-auto">
         <AnimatePresence initial={false} mode="wait">
           {!collapsed && (
             <motion.div
@@ -646,7 +651,10 @@ function SidebarContent({
         </AnimatePresence>
       </div>
       {/* FOOTER */}
-      <div className="mt-auto px-3 pt-3 pb-2 border-t border-[var(--border)] bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+       <div className="mt-auto sticky bottom-0 z-10 px-3 pt-3 pb-2
+                 border-t border-[var(--border)]
+                 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60
+                 xl:static">
         <AccountButton
           compact={collapsed}
           isLoadingName={isLoadingName}
