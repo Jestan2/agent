@@ -549,7 +549,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white text-[#111827]">
     {/* Top bar */}
-    <header className="sticky top-0 z-50 h-12 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="h-12 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       {/* 84px | center | 84px grid keeps the middle perfectly centered */}
       <div className="h-full w-full grid grid-cols-[84px_1fr_84px] items-center px-2">
         {/* LEFT CELL -------------------------------------------------------- */}
