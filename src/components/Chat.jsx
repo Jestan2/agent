@@ -201,9 +201,21 @@ function pad(n) {
   return String(n).padStart(2, "0");
 }
 function formatHumanTime(hh, mm) {
-  const d = new Date(0, 0, 0, hh, mm);
-  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const d = new Date(2000, 0, 1, hh, mm);
+  return d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    hourCycle: "h12",
+  });
 }
+
+function to12h(hhmm) {
+  if (!hhmm) return "";
+  const [h, m] = hhmm.split(":").map(Number);
+  return formatHumanTime(h, m);
+}
+
 function buildMonthMatrix(base) {
   const first = new Date(base.getFullYear(), base.getMonth(), 1);
   const startDay = first.getDay();
@@ -1032,7 +1044,7 @@ export default function Chat({ onRightRail }) {
         };
 
         appendAssistant(
-          `✅ Booking created: **${display}** — ${success.date || "—"} @ ${success.start_time || "—"}. I’ve saved the details below.`
+          `✅ Booking created: **${display}** — ${success.date || "—"} @ ${to12h(success.start_time) || "—"}. I’ve saved the details below.`
         );
 
         window.dispatchEvent(new CustomEvent("booking:success", { detail: success }));
