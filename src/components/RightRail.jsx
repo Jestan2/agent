@@ -1314,6 +1314,8 @@ function MobileSheet({
   useEffect(() => {
     const openHandler = () => setOpen(true);
     const closeHandler = () => setOpen(false);
+    
+    window.addEventListener("right-rail:open", openHandler);
     window.addEventListener("right-rail:close", closeHandler);
     return () => {
       window.removeEventListener("right-rail:open", openHandler);
