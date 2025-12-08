@@ -1921,7 +1921,7 @@ export default function Chat({ onRightRail }) {
                   className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100 active:bg-gray-200 transition"
                   aria-label="View booking details"
                 >
-                  <span>Confirm</span>
+                  <span>Confirm & Book</span>
                   <svg
                     className="w-4 h-4"
                     viewBox="0 0 24 24"
