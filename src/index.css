@@ -37,3 +37,29 @@
 
 html, body, #root { height: 100%; }
  body { overflow-x: hidden; overflow-y: auto; }  /* keep page vertical scroll */
+
+
+ @layer utilities {
+  /* clamp to real device viewport and reserve safe areas */
+  .h-screen-dvh { height: 100dvh; }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+  /* trap scroll inside a panel (prevents pull-to-refresh / background scroll) */
+  .overscroll-contain { overscroll-behavior: contain; }
+  .overscroll-y-contain { overscroll-behavior-y: contain; }
+
+  /* restrict touch to vertical scrolling (prevents sideways “wipe” squish) */
+  .touch-pan-y { touch-action: pan-y; }
+
+  /* momentum scroll on iOS */
+  .ios-momentum { -webkit-overflow-scrolling: touch; }
+
+  /* body lock when a sheet/modal is open */
+  .lock-scroll { overflow: hidden; height: 100dvh; }
+
+  /* common flex fixes for mobile row layouts */
+  .row-minw0 { min-width: 0; }          /* lets labels truncate instead of crushing buttons */
+  .row-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row-actions { flex-shrink: 0; }
+}
