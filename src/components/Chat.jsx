@@ -1594,13 +1594,13 @@ export default function Chat({ onRightRail }) {
           id="chat-thread"
           className={
             isLanding
-              ? "h-[calc(100dvh-56px)] overflow-hidden px-4"
-              : "h-[calc(100dvh-180px)] overflow-y-auto px-4"
+              ? "h-[calc(var(--app-vh)-56px)] overflow-hidden px-4"
+              : "h-[calc(var(--app-vh)-180px)] overflow-y-auto px-4 overscroll-contain"
           }
           style={{
             "--viewportH": isLanding
-              ? "calc(100dvh - 56px)"
-              : "calc(100dvh - 180px)",
+              ? "calc(var(--app-vh) - 56px)"
+              : "calc(var(--app-vh) - 180px)",
           }}
         >
           <div className="max-w-[760px] mx-auto">
@@ -1889,13 +1889,10 @@ export default function Chat({ onRightRail }) {
       )}
 
       {!isLanding && (
-        <form
-          className="sticky bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/90 to-transparent pt-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            sendUserMessage(input);
-          }}
-        >
+      <form
+        className="sticky bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/90 to-transparent pt-2 pb-[env(safe-area-inset-bottom)]"
+        onSubmit={(e) => { e.preventDefault(); sendUserMessage(input); }}
+      >
           <div className="max-w-[760px] mx-auto px-4">
             <div>
               <div className="relative rounded-xl border border-gray-200 bg-white shadow-sm px-3 py-3 pr-14">

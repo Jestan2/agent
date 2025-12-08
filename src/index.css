@@ -37,3 +37,8 @@
 
 html, body, #root { height: 100%; }
  body { overflow-x: hidden; overflow-y: auto; }  /* keep page vertical scroll */
+
+/* Viewport clamp for mobile address-bar collapse */
+:root { --app-vh: 100vh; }          /* fallback */
+@supports (height: 100svh) { :root { --app-vh: 100svh; } }  /* iOS 15+ */
+@supports (height: 100dvh) { :root { --app-vh: 100dvh; } }  /* modern browsers */
