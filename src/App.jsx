@@ -67,10 +67,7 @@ function ChatRouteShell({
   }, [sessionId]);
 
   return (
-    <div
-      className="grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0"
-      style={{ height: "calc(100vh - 56px)" }}
-    >
+    <div className="h-full grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
@@ -115,10 +112,7 @@ function JobRouteShell({
   const { jobId } = useParams();
 
   return (
-    <div
-      className="grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0"
-      style={{ height: "calc(100vh - 56px)" }}
-    >
+    <div className="h-full grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
@@ -160,19 +154,24 @@ function CalendarRouteShell({
   confirmCalendarTime,
 }) {
   return (
-    <div className="h-[calc(100vh-56px)] min-h-0 relative">
+    <div className="h-full min-h-0 relative">
       {/* Grid:
          - base: 1 col
          - md–lg: small left spacer to keep calendar visually centered; NO right column width
          - xl+: 360 | calendar | 360 (desktop unchanged)
       */}
-      <div className="
+      <div
+        className="
         h-full grid grid-cols-1
         md:grid-cols-[clamp(12px,6vw,72px)_minmax(0,1fr)]
         xl:grid-cols-[360px_minmax(0,1fr)_360px]
-      ">
+      "
+      >
         {/* Left spacer (border only from md+) */}
-        <div className="hidden md:block h-full border-r border-gray-200" aria-hidden="true" />
+        <div
+          className="hidden md:block h-full border-r border-gray-200"
+          aria-hidden="true"
+        />
 
         {/* Calendar in the middle always */}
         <CalendarView
@@ -547,170 +546,211 @@ export default function App() {
   /* ------------------------------------------------------------------ */
 
   return (
-    <div className="min-h-screen bg-white text-[#111827]">
-    {/* Top bar */}
-    <header className="h-12 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      {/* 84px | center | 84px grid keeps the middle perfectly centered */}
-      <div className="h-full w-full grid grid-cols-[84px_1fr_84px] items-center px-2">
-        {/* LEFT CELL -------------------------------------------------------- */}
-        <div className="flex items-center">
-          {isAccount ? (
-            <button
-              type="button"
-              onClick={backToChatOrHome}
-              className="inline-flex items-center h-9 px-3 rounded-full border border-gray-200 text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
-              aria-label="Back"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M15 19l-7-7 7-7"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="ml-1 text-sm hidden sm:inline">Back</span>
-            </button>
-          ) : (
-            // Mobile-only sidebar trigger; the cell itself stays 84px wide
-            !isCalendar && (
+    <div
+      className="flex flex-col bg-white text-[#111827]"
+      style={{
+        height: "100dvh",
+        maxHeight: "100dvh",
+        overflow: "hidden",
+      }}
+    >
+      {/* Top bar */}
+      <header className="h-12 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        {/* 84px | center | 84px grid keeps the middle perfectly centered */}
+        <div className="h-full w-full grid grid-cols-[84px_1fr_84px] items-center px-2">
+          {/* LEFT CELL -------------------------------------------------------- */}
+          <div className="flex items-center">
+            {isAccount ? (
               <button
                 type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="xl:hidden inline-flex items-center h-9 px-3 rounded-full border border-gray-200 text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
-                aria-label="Open sidebar"
+                onClick={backToChatOrHome}
+                className="inline-flex items-center h-9 px-3 rounded-full border border-gray-200 text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                aria-label="Back"
               >
-                {/* “two lines” icon */}
-                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M4 13h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M15 19l-7-7 7-7"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
+                <span className="ml-1 text-sm hidden sm:inline">Back</span>
               </button>
-            )
-          )}
-        </div>
-
-        {/* CENTER CELL ------------------------------------------------------ */}
-        <nav role="tablist" aria-label="Primary" className="justify-self-center">
-          <div className="relative flex items-center gap-2 p-1 rounded-full">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={isBook}
-              aria-current={isBook ? "page" : undefined}
-              onClick={goToBook}
-              className={`px-4 py-1.5 text-[15px] font-medium rounded-full transition-all
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
-                ${isBook ? "bg-gray-900 text-white shadow-sm" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"}`}
-            >
-              Book
-            </button>
-
-            <button
-              type="button"
-              role="tab"
-              aria-selected={isCalendar}
-              aria-current={isCalendar ? "page" : undefined}
-              onClick={() => navigate("/calendar")}
-              className={`px-4 py-1.5 text-[15px] font-medium rounded-full transition-all
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
-                ${isCalendar ? "bg-gray-900 text-white shadow-sm" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"}`}
-            >
-              Calendar
-            </button>
+            ) : (
+              // Mobile-only sidebar trigger; the cell itself stays 84px wide
+              !isCalendar && (
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(true)}
+                  className="xl:hidden inline-flex items-center h-9 px-3 rounded-full border border-gray-200 text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                  aria-label="Open sidebar"
+                >
+                  {/* “two lines” icon */}
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4 7h16"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M4 13h12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              )
+            )}
           </div>
-        </nav>
 
-        {/* RIGHT CELL (empty spacer to balance the grid) -------------------- */}
-        <div />
-      </div>
-    </header>
+          {/* CENTER CELL ------------------------------------------------------ */}
+          <nav
+            role="tablist"
+            aria-label="Primary"
+            className="justify-self-center"
+          >
+            <div className="relative flex items-center gap-2 p-1 rounded-full">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={isBook}
+                aria-current={isBook ? "page" : undefined}
+                onClick={goToBook}
+                className={`px-4 py-1.5 text-[15px] font-medium rounded-full transition-all
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
+                ${
+                  isBook
+                    ? "bg-gray-900 text-white shadow-sm"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Book
+              </button>
 
+              <button
+                type="button"
+                role="tab"
+                aria-selected={isCalendar}
+                aria-current={isCalendar ? "page" : undefined}
+                onClick={() => navigate("/calendar")}
+                className={`px-4 py-1.5 text-[15px] font-medium rounded-full transition-all
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
+                ${
+                  isCalendar
+                    ? "bg-gray-900 text-white shadow-sm"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Calendar
+              </button>
+            </div>
+          </nav>
 
-      {/* Routes */}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ChatRouteShell
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              sidebarCollapsed={sidebarCollapsed}
-              setSidebarCollapsed={setSidebarCollapsed}
-              rail={rail}
-              handleRightRail={handleRightRail}
-            />
-          }
-        />
-        <Route
-          path="/c/:sessionId"
-          element={
-            <ChatRouteShell
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              sidebarCollapsed={sidebarCollapsed}
-              setSidebarCollapsed={setSidebarCollapsed}
-              rail={rail}
-              handleRightRail={handleRightRail}
-            />
-          }
-        />
+          {/* RIGHT CELL (empty spacer to balance the grid) -------------------- */}
+          <div />
+        </div>
+      </header>
 
-        {/* NEW: job details + activity */}
-        <Route
-          path="/job/:jobId"
-          element={
-            <JobRouteShell
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              sidebarCollapsed={sidebarCollapsed}
-              setSidebarCollapsed={setSidebarCollapsed}
-              rail={rail}
-              handleRightRail={handleRightRail}
-            />
-          }
-        />
+      {/* Routes live in a fixed-height main area under the header */}
+      <main className="flex-1 min-h-0">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ChatRouteShell
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                sidebarCollapsed={sidebarCollapsed}
+                setSidebarCollapsed={setSidebarCollapsed}
+                rail={rail}
+                handleRightRail={handleRightRail}
+              />
+            }
+          />
+          <Route
+            path="/c/:sessionId"
+            element={
+              <ChatRouteShell
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                sidebarCollapsed={sidebarCollapsed}
+                setSidebarCollapsed={setSidebarCollapsed}
+                rail={rail}
+                handleRightRail={handleRightRail}
+              />
+            }
+          />
 
-        <Route
-          path="/calendar"
-          element={
-            <CalendarRouteShell
-              calRail={calRail}
-              openBookForDay={openBookForDay}
-              openViewForDay={openViewForDay}
-              closeCalRail={closeCalRail}
-              confirmCalendarTime={confirmCalendarTime}
-            />
-          }
-        />
-        {/* Account (guarded: opens AuthSheet if not logged in) */}
-        <Route
-          path="/account"
-          element={
-            <AccountGate
-              onTriggerAuth={() =>
-                window.dispatchEvent(
-                  new CustomEvent("auth:open", {
-                    detail: {
-                      resumeAction: { type: "goto", path: "/account" },
-                    },
-                  })
-                )
-              }
-            >
-              <Account />
-            </AccountGate>
-          }
-        />
+          {/* NEW: job details + activity */}
+          <Route
+            path="/job/:jobId"
+            element={
+              <JobRouteShell
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                sidebarCollapsed={sidebarCollapsed}
+                setSidebarCollapsed={setSidebarCollapsed}
+                rail={rail}
+                handleRightRail={handleRightRail}
+              />
+            }
+          />
 
-        {/* Accept Invite */}
-        <Route path="/accept" element={<AcceptInvite />} />
+          <Route
+            path="/calendar"
+            element={
+              <CalendarRouteShell
+                calRail={calRail}
+                openBookForDay={openBookForDay}
+                openViewForDay={openViewForDay}
+                closeCalRail={closeCalRail}
+                confirmCalendarTime={confirmCalendarTime}
+              />
+            }
+          />
+          {/* Account (guarded: opens AuthSheet if not logged in) */}
+          <Route
+            path="/account"
+            element={
+              <AccountGate
+                onTriggerAuth={() =>
+                  window.dispatchEvent(
+                    new CustomEvent("auth:open", {
+                      detail: {
+                        resumeAction: { type: "goto", path: "/account" },
+                      },
+                    })
+                  )
+                }
+              >
+                <Account />
+              </AccountGate>
+            }
+          />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* Accept Invite */}
+          <Route path="/accept" element={<AcceptInvite />} />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+
       <BookingSuccess />
       {/* Global Auth Sheet */}
       <AuthSheet
