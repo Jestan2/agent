@@ -254,6 +254,11 @@ function CalendarTimePicker({
   const [step, setStep] = useState("date");
   const [selectedDate, setSelectedDate] = useState(null);
 
+  // NEW: ref to time section (so we can scroll it into view on mobile)
+  const timeSectionRef = useRef(null);
+  // NEW: only auto-scroll when date was clicked by the user (not on preselect)
+  const dateClickRef = useRef(false);
+
   useEffect(() => {
     if (!preselectedDate) return;
     const [yyyy, mm, dd] = String(preselectedDate).split("-");
@@ -305,6 +310,8 @@ function CalendarTimePicker({
       if (d < today) return;
       setSelectedDate(d);
       setStep("time");
+      // mark that user explicitly tapped a date
+      dateClickRef.current = true;
     },
     [today]
   );
@@ -395,7 +402,10 @@ function CalendarTimePicker({
             </div>
 
             {/* Right: Time list */}
-            <div className="p-4 sm:p-6 border-t sm:border-t-0 sm:border-l border-gray-200">
+            <div
+              ref={timeSectionRef}
+              className="p-4 sm:p-6 border-t sm:border-t-0 sm:border-l border-gray-200 scroll-mt-24 sm:scroll-mt-0"
+            >
               <AnimatePresence initial={false} mode="wait">
                 {step === "date" && (
                   <motion.div
@@ -419,6 +429,20 @@ function CalendarTimePicker({
                     exit={{ x: -20, opacity: 0 }}
                     transition={{ duration: 0.25 }}
                     className="space-y-3"
+                    // NEW: after the time panel animates in, scroll it into view on mobile.
+                    onAnimationComplete={() => {
+                      if (!dateClickRef.current) return;
+                      dateClickRef.current = false;
+                      if (
+                        typeof window !== "undefined" &&
+                        window.matchMedia("(max-width: 639px)").matches
+                      ) {
+                        timeSectionRef.current?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }
+                    }}
                   >
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-gray-600">
