@@ -13,9 +13,14 @@ function nextBookableHourToday(now) {
   return n.getHours();
 }
 function formatLocalTime(hhmm) {
-  return new Date(`2000-01-01T${hhmm}:00`).toLocaleTimeString([], {
+  if (!hhmm) return "";
+  const [h, m] = String(hhmm).split(":").map(Number);
+  const d = new Date(2000, 0, 1, isNaN(h) ? 0 : h, isNaN(m) ? 0 : m);
+  return d.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
+    hour12: true,
+    hourCycle: "h12",
   });
 }
 function startOfDay(d) {
