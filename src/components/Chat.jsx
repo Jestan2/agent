@@ -510,8 +510,6 @@ export default function Chat({ onRightRail }) {
   const { sessionId: routeSessionId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  // Prevent right-rail auto-open on the very first user message (booking mode only)
-  const suppressFirstAutoOpenRef = useRef(false);
 
   const hasSeedInit = !!(
     location.state?.seedFirstMessage || location.state?.seedBooking
@@ -627,9 +625,7 @@ export default function Chat({ onRightRail }) {
 
   // Hide/show right rail before paint to prevent a flash on the landing screen
   useLayoutEffect(() => {
-    // If this is the first message and we want to suppress auto-open, keep it closed.
-    const nextShow = !isLanding && !suppressFirstAutoOpenRef.current;
-    onRightRail?.({ show: nextShow });
+    onRightRail?.({ show: !isLanding });
   }, [isLanding, onRightRail]);
 
   function appendAssistant(text) {
@@ -677,8 +673,6 @@ export default function Chat({ onRightRail }) {
     const seed = location.state?.seedFirstMessage;
     if (!routeSessionId || !seed || seededFirstHandled.current) return;
     seededFirstHandled.current = true;
-    // Treat seeded first message like a first manual message for UX
-    suppressFirstAutoOpenRef.current = true;
 
     setMessages((m) => [...m, { who: "user", text: seed }]);
     setWaiting(true);
@@ -756,11 +750,6 @@ export default function Chat({ onRightRail }) {
       const trimmed = text.trim();
       if (!trimmed || sending) return;
 
-     // If this is the very first user message of the chat, suppress the first auto-open
-      if (messages.length === 0) {
-        suppressFirstAutoOpenRef.current = true;
-      }
-
       setPicker(null);
       setPickerValue("");
       setUi((u) =>
@@ -789,7 +778,7 @@ export default function Chat({ onRightRail }) {
         setWaiting(false);
       }
     },
-    [sending, sessionId, uid, messages.length]
+    [sending, sessionId, uid]
   );
 
   // Landing submit → create server session, then navigate carrying the first message
@@ -1097,7 +1086,6 @@ export default function Chat({ onRightRail }) {
     if (oldId) {
       localStorage.removeItem(snapshotKeyFor(oldId));
     }
-    suppressFirstAutoOpenRef.current = false;
 
     const newId = crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2);
     localStorage.setItem("bm_session_id", newId);
@@ -1152,13 +1140,7 @@ export default function Chat({ onRightRail }) {
 
     draftRef.current = { ...(res.state?.slots || {}) };
 
-    // Decide if we should auto-open the Right Rail now:
-    // - booking mode = no job_details in slots
-    // - first turn suppression active => keep it closed
-    const bookingMode = !Boolean(res?.state?.slots?.job_details);
-    const suppressNow = bookingMode && suppressFirstAutoOpenRef.current === true;
-
-    // 🔴 send summary up so right rail can rehydrate; only auto-open if allowed
+    // 🔴 send summary up so right rail can rehydrate immediately
     onRightRail?.({
       summary: res.state?.slots ?? {},
       quoteCard: res.quote_card ?? null,
@@ -1173,11 +1155,8 @@ export default function Chat({ onRightRail }) {
       ready: (res.state?.next_needed?.length ?? 1) === 0,
       onConfirm,
       onEdit: openEditorForField,
-      show: !suppressNow,
+      show: true,
     });
-  // After the first response lands, clear suppression so future turns can open
-  suppressFirstAutoOpenRef.current = false;
-
   }
 
   /* ------------------------ POC: rehydrate on mount (deferred) ------------------------ */
