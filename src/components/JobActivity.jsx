@@ -707,7 +707,7 @@ export default function JobActivityModernB({ jobId, onRightRail }) {
   );
 
   return (
-    <div className="h-[calc(100vh-56px)] relative">
+    <div className="h-full relative">
       <EditorModal
         field={editingField}
         value={editingVal}
