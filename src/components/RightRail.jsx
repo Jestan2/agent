@@ -1304,13 +1304,21 @@ function MobileSheet({
   loading = false,
   showLockNotice = false,
 }) {
-  const [open, setOpen] = useState(show);
-  useEffect(() => setOpen(show), [show]);
+  // Start closed; only open via explicit event
+  const [open, setOpen] = useState(false);
+  // If the sheet gets disabled/unmounted, force-close it
+  useEffect(() => {
+    if (!show) setOpen(false);
+  }, [show]);
 
   useEffect(() => {
     const openHandler = () => setOpen(true);
-    window.addEventListener("right-rail:open", openHandler);
-    return () => window.removeEventListener("right-rail:open", openHandler);
+    const closeHandler = () => setOpen(false);
+    window.addEventListener("right-rail:close", closeHandler);
+    return () => {
+      window.removeEventListener("right-rail:open", openHandler);
+      window.removeEventListener("right-rail:close", closeHandler);
+    };
   }, []);
 
   const handleEdit = useCallback(
