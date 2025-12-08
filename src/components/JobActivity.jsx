@@ -821,32 +821,33 @@ export default function JobActivityModernB({ jobId, onRightRail }) {
         </div>
       </div>
 
-      {/* Mobile sticky footer: SOLID bar + “Details” */}
-      <div className="md:hidden absolute left-0 right-0 bottom-0">
-        <div className="bg-white border-t border-gray-200 py-3">
-          <div className="max-w-[760px] mx-auto px-4">
-            <div className="flex justify-center">
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event("right-rail:open"))}
-                className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100 active:bg-gray-200 transition"
-                aria-label="View booking details"
+    {/* Mobile sticky footer: matches Chat “Confirm & Book” */}
+    <div className="xl:hidden sticky bottom-0 left-0 right-0 z-50">
+      <div className="bg-gradient-to-t from-white via-white/90 to-transparent">
+        <div className="mx-auto w-full max-w-[760px] px-4 pt-2 pb-[max(env(safe-area-inset-bottom),12px)]">
+          <div className="mx-auto w-full max-w-[560px] border-t border-gray-200" />
+          <div className="mt-2 flex justify-center">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("right-rail:open"))}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-gray-900 hover:bg-gray-100 active:bg-gray-200 transition"
+              aria-label="View booking details"
+            >
+              <span>Details</span>
+              <svg
+                className="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
               >
-                <span>Details</span>
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </button>
-            </div>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
       {/* Jump-to-bottom arrow appears when not at the bottom */}
       <ScrollToBottom container={scrollElRef.current} hideThreshold={80} />
