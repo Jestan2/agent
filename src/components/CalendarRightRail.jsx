@@ -152,6 +152,46 @@ function SkelBar({ className = "" }) {
   return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />;
 }
 
+/* ---------- Issue + theme ---------- */
+function isWorkerNoShow(job) {
+  return job?.issue?.tag === "worker_no_show";
+}
+
+function themeForTimeline(job) {
+  if (isWorkerNoShow(job)) {
+    return {
+      cardBg: "bg-amber-50",
+      cardBorder: "border-amber-200",
+      cardText: "text-amber-900",
+      cardHover: "hover:border-amber-300",
+      cardRing: "focus:ring-amber-200",
+      gradTop: "to-amber-100/70",
+      gradBottom: "to-amber-100/80",
+      gradText: "text-amber-700/80",
+      accent: "bg-amber-400/90",
+      chipBorder: "border-amber-200",
+      chipBg: "bg-amber-50",
+      chipText: "text-amber-900",
+      chipHover: "hover:border-amber-300",
+    };
+  }
+  return {
+    cardBg: "bg-emerald-50",
+    cardBorder: "border-emerald-200",
+    cardText: "text-emerald-900",
+    cardHover: "hover:border-emerald-300",
+    cardRing: "focus:ring-emerald-200",
+    gradTop: "to-emerald-100/70",
+    gradBottom: "to-emerald-100/80",
+    gradText: "text-emerald-700/80",
+    accent: "bg-emerald-400/90",
+    chipBorder: "border-emerald-200",
+    chipBg: "bg-emerald-50",
+    chipText: "text-emerald-900",
+    chipHover: "hover:border-emerald-300",
+  };
+}
+
 /** Fixed-height timeline that never unmounts.
  *  - No layout jump: grid height is constant.
  *  - Cross-midnight jobs: we clip only by window times (no post-clamp nudging).
@@ -327,28 +367,30 @@ function TimelineBase({ jobs, axisTZ, rowH, mobile = false, showSkeleton, onOpen
         transition={{ duration: 0.18 }}
         style={{ pointerEvents: showSkeleton ? "none" : "auto" }}
       >
-        {laidOut.map(({ j, tz, topPx, heightPx, topClip, bottomClip, rangeLabel, left, width }) => (
+        {laidOut.map(({ j, tz, topPx, heightPx, topClip, bottomClip, rangeLabel, left, width }) => {
+          const t = themeForTimeline(j);
+          return (
           <div
             key={j.id}
             role="button"
-            tabIndex={0}
+           tabIndex={0}
             onClick={() => onOpenJob?.(j)}
             onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpenJob?.(j)}
-            className="absolute rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 shadow-[0_1px_0_rgba(0,0,0,0.04)] cursor-pointer hover:border-emerald-300 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-200"
+            className={`absolute rounded-lg ${t.cardBg} border ${t.cardBorder} ${t.cardText} shadow-[0_1px_0_rgba(0,0,0,0.04)] cursor-pointer ${t.cardHover} hover:shadow-sm focus:outline-none focus:ring-2 ${t.cardRing}`}
             style={{ top: topPx, height: heightPx, left, width }}
             title={`${rangeLabel} • ${j.service}${j.locCityState ? " • " + j.locCityState : ""} • ${j.workers} worker(s) • ${fmtDuration(j.durationMin)}`}
           >
             {/* Clip hints (kept inside the card; container hides overflow) */}
             {topClip && (
               <>
-                <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-t from-transparent to-emerald-100/70 rounded-t-lg pointer-events-none" />
-                <div className="absolute top-0.5 right-1 text-[10px] text-emerald-700/80 pointer-events-none">cont. ↑</div>
+                <div className={`absolute top-0 left-0 right-0 h-4 bg-gradient-to-t from-transparent ${t.gradTop} rounded-t-lg pointer-events-none`} />
+                <div className={`absolute top-0.5 right-1 text-[10px] ${t.gradText} pointer-events-none`}>cont. ↑</div>
               </>
             )}
             {bottomClip && (
               <>
-                <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-b from-transparent to-emerald-100/80 rounded-b-lg pointer-events-none" />
-                <div className="absolute bottom-1 right-1 text-[10px] text-emerald-700/80 pointer-events-none">→ cont.</div>
+                <div className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-b from-transparent ${t.gradBottom} rounded-b-lg pointer-events-none`} />
+                <div className={`absolute bottom-1 right-1 text-[10px] ${t.gradText} pointer-events-none`}>→ cont.</div>
               </>
             )}
 
@@ -356,14 +398,15 @@ function TimelineBase({ jobs, axisTZ, rowH, mobile = false, showSkeleton, onOpen
               <div className="text-[12px] font-semibold leading-5 truncate">
                 <span className="tabular-nums">{rangeLabel}</span> · {j.service}
               </div>
-              <div className="text-[12px] leading-5 text-emerald-800/90 truncate">
+              <div className="text-[12px] leading-5 text-gray-700/90 truncate">
                 {j.locCityState ? j.locCityState + " · " : ""}
                 {j.workers} worker{j.workers === 1 ? "" : "s"} · {fmtDuration(j.durationMin)}
               </div>
             </div>
-            <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg bg-emerald-400/90" />
+            <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-lg ${t.accent}`} />
           </div>
-        ))}
+      );
+      })}
 
         {/* "+N more" overflow badges for dense clusters */}
         {overflowBadges.map((b, idx) => (
@@ -381,18 +424,21 @@ function TimelineBase({ jobs, axisTZ, rowH, mobile = false, showSkeleton, onOpen
         {overflowBottom.length > 0 && (
           <div className="absolute left-0 right-0 bottom-2 ml-16 mr-1 flex flex-wrap items-center gap-2">
             <span className="text-[11px] uppercase tracking-wide text-gray-500 select-none">Late night</span>
-            {overflowBottom.slice(0, 2).map(({ j, tz }) => (
-              <button
-                key={`late-${j.id}`}
-                type="button"
-                onClick={() => onOpenJob?.(j)}
-                className="px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-900 text-[12px] shadow-[0_1px_0_rgba(0,0,0,0.03)] hover:border-emerald-300"
-                title={`${timeRangeLabel(j.start, j.end, tz)} • ${j.service}`}
-              >
-                {fmtTimeTZ(j.start, tz)} – {fmtTimeTZ(j.end, tz)}
-                {j.end.getDate() !== j.start.getDate() ? " (+1)" : ""} · {j.service}
-              </button>
-            ))}
+            {overflowBottom.slice(0, 2).map(({ j, tz }) => {
+              const t = themeForTimeline(j);
+              return (
+                <button
+                  key={`late-${j.id}`}
+                  type="button"
+                  onClick={() => onOpenJob?.(j)}
+                  className={`px-2.5 py-1 rounded-full border ${t.chipBorder} ${t.chipBg} ${t.chipText} text-[12px] shadow-[0_1px_0_rgba(0,0,0,0.03)] ${t.chipHover}`}
+                  title={`${timeRangeLabel(j.start, j.end, tz)} • ${j.service}`}
+                >
+                  {fmtTimeTZ(j.start, tz)} – {fmtTimeTZ(j.end, tz)}
+                  {j.end.getDate() !== j.start.getDate() ? " (+1)" : ""} · {j.service}
+                </button>
+              );
+            })}
             {overflowBottom.length > 2 && (
               <div className="px-2.5 py-1 rounded-full border border-gray-200 bg-white text-gray-700 text-[12px] select-none">
                 +{overflowBottom.length - 2} more
@@ -405,18 +451,21 @@ function TimelineBase({ jobs, axisTZ, rowH, mobile = false, showSkeleton, onOpen
         {overflowTop.length > 0 && (
           <div className="absolute left-0 right-0 top-2 ml-16 mr-1 flex flex-wrap items-center gap-2">
             <span className="text-[11px] uppercase tracking-wide text-gray-500 select-none">Early</span>
-            {overflowTop.slice(0, 2).map(({ j, tz }) => (
-              <button
-                key={`early-${j.id}`}
-                type="button"
-                onClick={() => onOpenJob?.(j)}
-                className="px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-900 text-[12px] shadow-[0_1px_0_rgba(0,0,0,0.03)] hover:border-emerald-300"
-                title={`${timeRangeLabel(j.start, j.end, tz)} • ${j.service}`}
-              >
-                {fmtTimeTZ(j.start, tz)} – {fmtTimeTZ(j.end, tz)}
-                {j.end.getDate() !== j.start.getDate() ? " (+1)" : ""} · {j.service}
-              </button>
-            ))}
+            {overflowTop.slice(0, 2).map(({ j, tz }) => {
+              const t = themeForTimeline(j);
+              return (
+                <button
+                  key={`early-${j.id}`}
+                  type="button"
+                  onClick={() => onOpenJob?.(j)}
+                  className={`px-2.5 py-1 rounded-full border ${t.chipBorder} ${t.chipBg} ${t.chipText} text-[12px] shadow-[0_1px_0_rgba(0,0,0,0.03)] ${t.chipHover}`}
+                  title={`${timeRangeLabel(j.start, j.end, tz)} • ${j.service}`}
+                >
+                  {fmtTimeTZ(j.start, tz)} – {fmtTimeTZ(j.end, tz)}
+                  {j.end.getDate() !== j.start.getDate() ? " (+1)" : ""} · {j.service}
+                </button>
+              );
+            })}
             {overflowTop.length > 2 && (
               <div className="px-2.5 py-1 rounded-full border border-gray-200 bg-white text-gray-700 text-[12px] select-none">
                 +{overflowTop.length - 2} more
@@ -544,8 +593,6 @@ export default function CalendarRightRail({
     return rawJobs
       .filter((j) => {
         const jd = j.job_details || j.raw?.job_details || {};
-        the: // intentionally left but not needed
-        "";
         const status = (jd?.status || "").toString().toLowerCase();
         return status !== "cancelled"; // 🚫 exclude cancelled
       })
@@ -580,6 +627,7 @@ export default function CalendarRightRail({
           workers,
           locCityState,
           tz,
+          issue: j.issue || j.raw?.issue || null,
         };
       })
       .filter((x) => x.start instanceof Date && x.end instanceof Date && !isNaN(x.start))

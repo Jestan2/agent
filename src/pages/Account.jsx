@@ -901,12 +901,64 @@ function formatHistoryDate(item) {
 
   return "—";
 }
+
+function formatHistoryDateTimeShort(item) {
+  try {
+    if (item?.start_at_utc) {
+      const tz = item?.timezone_id || "UTC";
+      const d = new Date(item.start_at_utc);
+
+      const parts = new Intl.DateTimeFormat(undefined, {
+        timeZone: tz,
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }).formatToParts(d);
+
+      const get = (t) => (parts.find((p) => p.type === t) || {}).value || "";
+      const wd = get("weekday");      // Fri
+      const month = get("month");     // Nov
+      const day = get("day");         // 29
+      const hour = get("hour");       // 1
+      const minute = get("minute");   // 00
+      const dayPeriod = get("dayPeriod"); // AM / PM
+
+      if (wd && month && day && hour && minute && dayPeriod) {
+        // Example: "Fri, Nov 29 · 1:00 PM"
+        return `${wd}, ${month} ${day} · ${hour}:${minute} ${dayPeriod}`;
+      }
+    }
+  } catch (_) {}
+
+  // Fallback to job_date + optional label if no start_at_utc
+  if (item?.job_date) {
+    const d = new Date(`${item.job_date}T12:00:00Z`);
+    const parts = new Intl.DateTimeFormat(undefined, {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).formatToParts(d);
+    const get = (t) => (parts.find((p) => p.type === t) || {}).value || "";
+    const wd = get("weekday");
+    const month = get("month");
+    const day = get("day");
+    const base = wd && month && day ? `${wd}, ${month} ${day}` : "—";
+    const timeLabel = (item?.job_time_label || "").trim();
+    return timeLabel ? `${base} · ${timeLabel}` : base;
+  }
+
+  return "—";
+}
 /* Bullet separator */
 const Dot = () => <span className="mx-2 text-gray-300" aria-hidden>•</span>;
 
 function JobRow({ item }) {
   const display = item?.display_id || item?.job_id || "—";
-  const dateLabel = formatHistoryDate(item);
+  const dateLabel = formatHistoryDate(item);                // desktop (unchanged)
+  const dateTimeShort = formatHistoryDateTimeShort(item);   // mobile
 
   const _safeNum = (n, fb = null) => {
     const x = Number(n);
@@ -933,11 +985,22 @@ function JobRow({ item }) {
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 4 }}
-      className="group flex items-center justify-between gap-3 p-4 rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow transition-shadow"
+      className="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow transition-shadow"
     >
-      {/* Left: single concise line */}
+      {/* LEFT / TOP: text */}
       <div className="min-w-0 flex-1">
-        <div className="min-w-0 flex items-center text-[15px] sm:text-[16px] leading-6 text-gray-900">
+        {/* Mobile: stacked, only ID + short date/time */}
+        <div className="sm:hidden">
+          <div className="text-sm font-semibold text-gray-900 truncate">
+            {display}
+          </div>
+          <div className="mt-0.5 text-xs text-gray-600 truncate">
+            {dateTimeShort}
+          </div>
+        </div>
+
+        {/* Desktop: original single-line layout (unchanged) */}
+        <div className="hidden sm:flex min-w-0 items-center text-[15px] sm:text-[16px] leading-6 text-gray-900">
           <span className="truncate font-semibold">{display}</span>
           <Dot />
           <span className="truncate">{dateLabel}</span>
@@ -951,14 +1014,14 @@ function JobRow({ item }) {
         </div>
       </div>
 
-      {/* Right: action chips (wrap on small screens) */}
-      <div className="flex items-center gap-2 shrink-0 flex-wrap">
+      {/* RIGHT / BOTTOM: action chips */}
+      <div className="flex flex-wrap gap-2 pt-1 sm:pt-0 justify-start sm:justify-end">
         <motion.a
           href={item?.invoice_url || "#"}
           target="_blank"
           rel="noopener noreferrer"
           whileTap={{ scale: 0.98 }}
-          className="inline-flex items-center h-8 sm:h-9 px-3 rounded-full bg-gray-900 text-white text-xs sm:text-sm font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-gray-900/40 transition"
+          className="inline-flex items-center h-9 px-4 rounded-full bg-gray-900 text-white text-xs sm:text-sm font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-gray-900/40 transition w-auto"
           aria-label={`View invoice for ${display}`}
         >
           View Invoice
@@ -970,7 +1033,7 @@ function JobRow({ item }) {
             target="_blank"
             rel="noopener noreferrer"
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center h-8 sm:h-9 px-3 rounded-full border border-gray-200 bg-white text-gray-900 text-xs sm:text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900/10 transition"
+            className="inline-flex items-center h-9 px-4 rounded-full border border-gray-200 bg-white text-gray-900 text-xs sm:text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900/10 transition w-auto"
             aria-label={`View credit note for ${display}${creditAmtLabel ? ` (${creditAmtLabel})` : ""}`}
             title={creditAmtLabel ? `Credit Note — ${creditAmtLabel}` : "Credit Note"}
           >
@@ -1204,27 +1267,30 @@ function AccountTabsLeft() {
   // While auth observer hasn’t resolved, keep page stable
   if (!d.authReady || !d.user) {
     return (
-      <div className="max-w-[1120px] mx-auto px-3 sm:px-4 pb-20 sm:pb-10">
-        <div className="mt-4 sm:mt-6">
-          <AccountAdminSkeleton />
+      <div className="h-full min-h-0 overflow-y-auto">
+        <div className="max-w-[1120px] mx-auto px-3 sm:px-4 pb-20 sm:pb-10">
+          <div className="mt-4 sm:mt-6">
+            <AccountAdminSkeleton />
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-[1120px] mx-auto px-3 sm:px-4 pb-[calc(env(safe-area-inset-bottom)+72px)] sm:pb-10">
-      <TopTabBar current={tab} onChange={setTab} />
+    <div className="h-full min-h-0 overflow-y-auto">
+      <div className="max-w-[1120px] mx-auto px-3 sm:px-4 pb-[calc(env(safe-area-inset-bottom)+72px)] sm:pb-10">
+        <TopTabBar current={tab} onChange={setTab} />
 
-      <AnimatePresence mode="wait">
-        {tab === "Account" && <PanelAccount d={d} />}
-        {tab === "History" && <PanelHistory d={d} />}
-        {tab === "Users" && <PanelUsers d={d} />}
-      </AnimatePresence>
+        <AnimatePresence mode="wait">
+          {tab === "Account" && <PanelAccount d={d} />}
+          {tab === "History" && <PanelHistory d={d} />}
+          {tab === "Users" && <PanelUsers d={d} />}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
-
 /* ------------------------------ Export ------------------------------ */
 export default function Account() {
   return <AccountTabsLeft />;

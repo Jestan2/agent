@@ -545,7 +545,7 @@ export default function AuthSheet({ open, onClose, resumeAction = null, onComple
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
           >
-            <div className="mx-auto w-full max-w-[520px] md:rounded-2xl bg-white shadow-xl border border-gray-200">
+            <div className="mx-auto w-full max-w-[520px] rounded-2xl bg-white shadow-xl border border-gray-200">
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
                 <h2 className="text-[16px] md:text-[17px] font-semibold text-gray-900">
                   {step === "auth" ? "Log in or sign up" : step === "profile" ? "Complete your profile" : "Add a payment method"}

@@ -56,7 +56,21 @@ function dateKeyInTZ(date, tz) {
     return `${y}-${m}-${d}`;
   }
 }
+
+/* ---------------- Issue detector (strict top-level) ---------------- */
+function isWorkerNoShow(job) {
+  return job?.issue?.tag === "worker_no_show";
+}
+
 function themeFor(job) {
+  if (isWorkerNoShow(job)) {
+    return {
+      dot: "bg-amber-500",
+      chipBg: "bg-amber-50",
+      chipText: "text-amber-800",
+      chipBorder: "border-amber-200",
+    };
+  }
   return {
     dot: "bg-emerald-500",
     chipBg: "bg-emerald-50",
@@ -339,6 +353,8 @@ export default function CalendarView({
             const isSelectedMobile = isSame(d, mobilePicked);
 
             const dayJobs = jobsForDate(d);
+            const dotCount = Math.min(dayJobs.length, 3);
+            const hasNoShow = dayJobs.some(isWorkerNoShow);
             const borderClass = isSelectedExternal
               ? "border-gray-900 ring-2 ring-gray-900/60"
               : isCurrentMonth
@@ -387,9 +403,19 @@ export default function CalendarView({
 
                 {/* MOBILE + TABLET: bottom-centered tiny dots (1–3) */}
                 <div className="xl:hidden pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-1.5 flex items-center gap-1">
-                  {Array.from({ length: Math.min(dayJobs.length, 3) }).map((_, idx) => (
-                    <span key={idx} className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  ))}
+                  {Array.from({ length: dotCount }).map((_, idx) => {
+                    // If any job is a worker no show, the *first* dot is amber.
+                    // Remaining dots stay green.
+                    const colorClass =
+                      hasNoShow && idx === 0 ? "bg-amber-500" : "bg-emerald-500";
+
+                    return (
+                      <span
+                        key={idx}
+                        className={`h-1.5 w-1.5 rounded-full ${colorClass}`}
+                      />
+                    );
+                  })}
                 </div>
 
                 {/* Desktop hover actions */}

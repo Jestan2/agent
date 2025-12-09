@@ -7,6 +7,7 @@ import { db } from "./firebase";
 import { membershipsMe } from "./api";
 import { useAuth } from "../context/AuthContext.jsx";
 
+// src/lib/useCompanyJobs.js
 function normalizeJob(doc) {
   const data = doc.data() || {};
   const jd = data.job_details || {};
@@ -21,6 +22,7 @@ function normalizeJob(doc) {
     service: (jd.services_requested?.[0] || "").toString(),
     status: data.status || jd.status || "scheduled",
     city: jd.address?.city || "",
+    issue: data.issue || jd.issue || null, // ← add this line
     raw: data,
   };
 }

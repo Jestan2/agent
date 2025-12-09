@@ -125,6 +125,18 @@ function isFullRefundEligible(startISO) {
 }
 
 /* --------------------------- Status theme --------------------------- */
+
+/* --------------------------- Issue theme (worker no-show) --------------------------- */
+const ISSUE_THEME = {
+  accent: "bg-amber-500",
+  dot: "bg-amber-500",
+  chipBg: "bg-amber-50",
+  chipText: "text-amber-800",
+  chipBorder: "border-amber-200",
+  rowText: "text-gray-900",
+  rowMuted: "",
+};
+
 function themeFor(variant = "upcoming") {
   if (variant === "past") {
     return {
@@ -286,6 +298,12 @@ function getStatus(job) {
   return (jd.status || "").toString().toLowerCase();
 }
 
+/* --------------------------- Issue detector (strict top-level) --------------------------- */
+function isWorkerNoShow(job) {
+  // Only accept exactly "worker_no_show" at the top level.
+  return job?.issue?.tag === "worker_no_show";
+}
+
 /* --------------------------- Job row --------------------------- */
 function JobRow({ job, onCancel, onSelect, variant = "upcoming" }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -311,7 +329,7 @@ function JobRow({ job, onCancel, onSelect, variant = "upcoming" }) {
   const displayId = job.id || "Booking";
   const city = jd.address?.city || job.city || "";
 
-  const theme = themeFor(variant);
+  const theme = isWorkerNoShow(job) ? ISSUE_THEME : themeFor(variant);
 
   const handleRowClick = (e) => {
     if (btnRef.current?.contains(e.target)) return;
