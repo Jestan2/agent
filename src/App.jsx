@@ -160,18 +160,13 @@ function CalendarRouteShell({
          - md–lg: small left spacer to keep calendar visually centered; NO right column width
          - xl+: 360 | calendar | 360 (desktop unchanged)
       */}
-      <div
-        className="
-        h-full grid grid-cols-1
-        md:grid-cols-[clamp(12px,6vw,72px)_minmax(0,1fr)]
-        xl:grid-cols-[360px_minmax(0,1fr)_360px]
-      "
-      >
-        {/* Left spacer (border only from md+) */}
-        <div
-          className="hidden md:block h-full border-r border-gray-200"
-          aria-hidden="true"
-        />
+    <div
+      className="
+            h-full grid grid-cols-1
+            2xl:grid-cols-[360px_minmax(0,1fr)_360px]
+          "
+    >
+
 
         {/* Calendar in the middle always */}
         <CalendarView
@@ -180,37 +175,37 @@ function CalendarRouteShell({
           selectedDate={calRail.date}
         />
 
-        {/* DESKTOP (xl+): inline right rail in the third column */}
-        {calRail.open ? (
-          <div className="hidden xl:block">
-            <CalendarRightRail
-              open={calRail.open}
-              mode={calRail.mode}
-              date={calRail.date}
-              onClose={closeCalRail}
-              onPickTime={confirmCalendarTime}
-            />
-          </div>
-        ) : (
-          <div className="hidden xl:block" aria-hidden="true" />
-        )}
+      {/* DESKTOP (2xl+): inline right rail in the third column */}
+      {calRail.open ? (
+        <div className="hidden 2xl:block">
+          <CalendarRightRail
+            open={calRail.open}
+            mode={calRail.mode}
+            date={calRail.date}
+            onClose={closeCalRail}
+            onPickTime={confirmCalendarTime}
+          />
+        </div>
+      ) : (
+        <div className="hidden 2xl:block" aria-hidden="true" />
+      )}
       </div>
 
-      {/* TABLET overlay (md–lg): floats above the grid so the middle column stays wide/centered */}
-      {calRail.open && (
-        <div className="md:block xl:hidden fixed right-0 top-[56px] bottom-0 z-40">
-          {/* Sheet container width: max 420px, otherwise ~92vw on small tablets */}
-          <div className="h-full w-[min(420px,92vw) border-l border-gray-200 shadow-2xl">
-            <CalendarRightRail
-              open={calRail.open}
-              mode={calRail.mode}
-              date={calRail.date}
-              onClose={closeCalRail}
-              onPickTime={confirmCalendarTime}
-            />
-          </div>
+    {/* OVERLAY (md..xl): floats above the grid so the middle column stays wide/centered */}
+    {calRail.open && (
+      <div className="md:block 2xl:hidden fixed right-0 top-[56px] bottom-0 z-40">
+        {/* Sheet container width: max 420px, otherwise ~92vw on small tablets/laptops */}
+        <div className="h-full w-[min(420px,92vw)] border-l border-gray-200 bg-white shadow-2xl">
+          <CalendarRightRail
+            open={calRail.open}
+            mode={calRail.mode}
+            date={calRail.date}
+            onClose={closeCalRail}
+            onPickTime={confirmCalendarTime}
+          />
         </div>
-      )}
+      </div>
+    )}
     </div>
   );
 }
