@@ -672,7 +672,7 @@ export default function CalendarRightRail({
     <>
       {/* INLINE RIGHT RAIL — xl+ only */}
       <aside className="hidden xl:flex flex-col border-l border-gray-200 bg-white sticky top-[56px] h-[calc(100dvh-56px)] overflow-y-auto overflow-x-hidden">
-        <div className="w-[320px] 2xl:w-[360px] p-5 space-y-6">
+        <div className="w-[360px] p-5 space-y-6">
           <Header mode={mode} onClose={onClose} />
           <div className="text-[14px] text-gray-600">{pretty}</div>
 

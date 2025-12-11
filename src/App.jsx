@@ -160,19 +160,18 @@ function CalendarRouteShell({
          - md–lg: small left spacer to keep calendar visually centered; NO right column width
          - xl+: 360 | calendar | 360 (desktop unchanged)
       */}
-    <div
-      className="
-            h-full grid grid-cols-1
-            md:grid-cols-[clamp(12px,6vw,72px)_minmax(0,1fr)]
-            xl:grid-cols-[minmax(0,1fr)_320px]
-            2xl:grid-cols-[360px_minmax(0,1fr)_360px]
-          "
-    >
+      <div
+        className="
+        h-full grid grid-cols-1
+        md:grid-cols-[clamp(12px,6vw,72px)_minmax(0,1fr)]
+        xl:grid-cols-[360px_minmax(0,1fr)_360px]
+      "
+      >
         {/* Left spacer (border only from md+) */}
-    <div
-      className="hidden md:block xl:hidden 2xl:block h-full border-r border-gray-200"
-      aria-hidden="true"
-    />
+        <div
+          className="hidden md:block h-full border-r border-gray-200"
+          aria-hidden="true"
+        />
 
         {/* Calendar in the middle always */}
         <CalendarView
@@ -201,7 +200,7 @@ function CalendarRouteShell({
       {calRail.open && (
         <div className="md:block xl:hidden fixed right-0 top-[56px] bottom-0 z-40">
           {/* Sheet container width: max 420px, otherwise ~92vw on small tablets */}
-          <div className="h-full w-[min(420px,92vw)] border-l border-gray-200 shadow-2xl">
+          <div className="h-full w-[min(420px,92vw) border-l border-gray-200 shadow-2xl">
             <CalendarRightRail
               open={calRail.open}
               mode={calRail.mode}
