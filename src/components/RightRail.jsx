@@ -2540,69 +2540,102 @@ useEffect(() => {
       </EditorModal>
 
       {/* ------------------------- Action Confirmation Modals ------------------------- */}
-      {/* Extend: simple bridge into duration editor */}
-      <EditorModal open={jobMode && actionModal === "extend"} title="Extend job" onClose={closeAction}>
-        <div className="space-y-3">
-          <p className="text-sm text-gray-700">
-            Extend the estimated duration to keep the crew on site longer.
+      {/* Extend: always show call-in instructions */}
+      <EditorModal open={jobMode && actionModal === "extend"} title="Request an extension" onClose={closeAction}>
+        <div className="space-y-2">
+          <p>
+            Call{" "}
+            <a href="tel:18883549934" className="underline font-medium">
+              888-354-9934
+            </a>{" "}
+            to request an extension. We’ll coordinate with your crew and on-site manager and confirm availability.
           </p>
-          <div>
-            <button
-              className="rounded-xl px-4 py-2 text-sm bg-[#04193b] text-white hover:opacity-90"
-              onClick={() => {
-                closeAction();
-                setEditor({ type: "duration_hours", initialDuration: s?.job_details?.duration ?? null });
-              }}
-            >
-              Choose new duration
-            </button>
-          </div>
+          <p>Extensions depend on worker schedules; we’ll do our best to accommodate.</p>
+        </div>
+        <div className="mt-4 flex justify-end">
+          <button
+            className="rounded-xl px-4 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+            onClick={closeAction}
+          >
+            Close
+          </button>
         </div>
       </EditorModal>
 
       {/* End Job */}
       <EditorModal open={jobMode && actionModal === "end"} title="End job?" onClose={closeAction}>
-        <div className="space-y-3">
-          <p className="text-sm text-gray-700">
-            This will end the job and finalize charges based on time worked.
-          </p>
-          <div className="flex gap-2">
-            <button
-              className="rounded-xl px-4 py-2 text-sm bg-[#04193b] text-white hover:opacity-90"
-              onClick={async () => {
-                try {
-                  await crmEndJob({ jobId, getIdToken });
-                  closeAction();
-                  // Optional: broadcast
-                  window.dispatchEvent(new Event("job:ended"));
-                } catch (e) {
-                  alert(e?.message || "Failed to end job");
-                }
-              }}
-            >
-              End job
-            </button>
-            <button
-              className="rounded-xl px-4 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
-              onClick={closeAction}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+        {hasStarted ? (
+          <>
+            <p>
+              This will close your booking and{" "}
+              <span className="font-semibold">pay your workers immediately</span>. You’ll still
+              see the job in your history and receive a receipt.
+            </p>
+            <div className="mt-4 flex gap-2 justify-end">
+              <button
+                className="rounded-xl px-4 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+                onClick={closeAction}
+              >
+                Not yet
+              </button>
+              <button
+                className="rounded-xl px-4 py-2 text-sm bg-[#04193b] text-white hover:opacity-90"
+                onClick={async () => {
+                  try {
+                    await crmEndJob({ jobId, getIdToken });
+                    closeAction();
+                    window.dispatchEvent(new Event("job:ended"));
+                  } catch (e) {
+                    alert(e?.message || "Failed to end job");
+                  }
+                }}
+              >
+                End job
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>It looks like your job hasn’t started yet. You can end the job once it’s underway.</p>
+            <div className="mt-4 flex justify-end">
+              <button
+                className="rounded-xl px-4 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+                onClick={closeAction}
+              >
+                Okay
+              </button>
+            </div>
+          </>
+        )}
       </EditorModal>
 
       {/* Cancel Job */}
-      <EditorModal open={jobMode && actionModal === "cancel"} title="Cancel job?" onClose={closeAction}>
-        <div className="space-y-3">
-          <p className="text-sm text-gray-700">
-            {hasStarted
-              ? "The job has started. Cancelling now may incur charges."
-              : freeCancel
-              ? "You’re more than 24 hours out — cancellation should be free."
-              : "Within 24 hours of the start time — cancellation fee may apply."}
-          </p>
-          <div className="flex gap-2">
+      <EditorModal open={jobMode && actionModal === "cancel"} title="Cancel booking?" onClose={closeAction}>
+        <div className="space-y-2">
+          {freeCancel ? (
+            <p>
+              You’re more than 24 hours from the start time, so{" "}
+              <span className="font-semibold">no cancellation charge</span> applies. We’ll notify
+              your crew right away.
+            </p>
+          ) : (
+            <p>
+              You’re within 24 hours of the start time. For assistance please call{" "}
+              <a href="tel:18883549934" className="underline font-medium">
+                888-354-9934
+              </a>
+              .
+            </p>
+          )}
+        </div>
+        <div className="mt-4 flex gap-2 justify-end">
+          <button
+            className="rounded-xl px-4 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+            onClick={closeAction}
+          >
+            Keep booking
+          </button>
+          {freeCancel && (
             <button
               className="rounded-xl px-4 py-2 text-sm border border-red-600 text-red-600 bg-white hover:bg-red-50"
               onClick={async () => {
@@ -2615,15 +2648,9 @@ useEffect(() => {
                 }
               }}
             >
-              Confirm cancel
+              Cancel job
             </button>
-            <button
-              className="rounded-xl px-4 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
-              onClick={closeAction}
-            >
-              Keep job
-            </button>
-          </div>
+          )}
         </div>
       </EditorModal>
     </>
