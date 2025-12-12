@@ -647,12 +647,20 @@ export default function CalendarRightRail({
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose?.();
     document.addEventListener("keydown", onKey);
-    document.documentElement.classList.add("overflow-hidden");
-    document.body.classList.add("overflow-hidden");
+
+    // Only lock background scroll for the mobile/tablet bottom sheet (< xl)
+    const isMobileSheet = window.matchMedia("(max-width: 1279px)").matches;
+    if (isMobileSheet) {
+      document.documentElement.classList.add("overflow-hidden");
+      document.body.classList.add("overflow-hidden");
+    }
+
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.documentElement.classList.remove("overflow-hidden");
-      document.body.classList.remove("overflow-hidden");
+      if (isMobileSheet) {
+        document.documentElement.classList.remove("overflow-hidden");
+        document.body.classList.remove("overflow-hidden");
+      }
     };
   }, [onClose]);
 
@@ -671,7 +679,7 @@ export default function CalendarRightRail({
   return (
     <>
       {/* INLINE RIGHT RAIL — xl+ only */}
-      <aside className="hidden xl:flex flex-col border-l border-gray-200 bg-white sticky top-[56px] h-[calc(100dvh-56px)] overflow-y-auto overflow-x-hidden">
+      <aside className="hidden min-[2044px]:flex flex-col border-l border-gray-200 bg-white sticky top-[56px] h-[calc(100dvh-56px)] overflow-y-auto overflow-x-hidden">
         <div className="w-[360px] p-5 space-y-6">
           <Header mode={mode} onClose={onClose} />
           <div className="text-[14px] text-gray-600">{pretty}</div>
@@ -684,12 +692,14 @@ export default function CalendarRightRail({
         </div>
       </aside>
 
-      {/* TABLET OVERLAY — lg..xl */}
-      <div className="hidden lg:block xl:hidden h-full bg-white border-l border-gray-200 shadow-2xl">
-        <div className="px-5 pt-5 pb-6 space-y-4 overflow-auto">
+      {/* XL OVERLAY — xl.. <2044px (fixed, Apple-style header + scroll body) */}
+      <div className="hidden xl:flex min-[2044px]:hidden fixed right-0 top-[112px] bottom-0 z-40 w-[min(420px,92vw)] flex-col bg-white border-l border-gray-200 shadow-2xl">
+        <div className="shrink-0 px-5 pt-4 pb-4 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
           <Header mode={mode} onClose={onClose} />
-          <div className="text-[14px] text-gray-600">For {pretty}</div>
+          <div className="mt-1 text-[13px] text-gray-500">{pretty}</div>
+        </div>
 
+        <div className="flex-1 min-h-0 px-5 py-4 overflow-y-auto overscroll-contain">
           {mode === "book" ? (
             <BookList flat timeSlots={timeSlots} onPickTime={onPickTime} />
           ) : (
@@ -707,7 +717,7 @@ export default function CalendarRightRail({
       {/* MOBILE — bottom sheet */}
       <motion.div
         key="mb-backdrop"
-        className="lg:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px]"
+        className="xl:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -719,7 +729,7 @@ export default function CalendarRightRail({
         key="mb-sheet"
         role="dialog"
         aria-modal="true"
-        className="lg:hidden fixed inset-x-0 bottom-0 z-50"
+        className="xl:hidden fixed inset-x-0 bottom-0 z-50"
         initial={{ y: 56, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 56, opacity: 0 }}
@@ -788,7 +798,7 @@ export default function CalendarRightRail({
 function Header({ mode, onClose }) {
   return (
     <div className="flex items-center justify-between">
-      <h2 className="text-[16px] pt-2 font-semibold text-[#04193b]">
+      <h2 className="text-[16px] font-semibold leading-6 text-[#04193b]">
         {mode === "book" ? "Select a time" : "Day schedule"}
       </h2>
       <button

@@ -282,9 +282,10 @@ export default function CalendarView({
     : null;
 
   return (
-    <div className="w-full h-full bg-white flex flex-col">
+    <div className="w-full h-full min-h-0 bg-white flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 xl:px-10 2xl:px-28 py-3 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <div className="border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+  <div className="max-w-[1250px] mx-auto w-full flex items-center justify-between px-4 sm:px-6 md:px-8 py-3">
         <button
           onClick={() => goto(-1)}
           className="xl:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg border border-gray-200 hover:bg-gray-50"
@@ -325,9 +326,9 @@ export default function CalendarView({
           </button>
         </div>
       </div>
-
+  </div>
       {/* Main area */}
-      <div className="flex-1 px-2 sm:px-4 md:px-6 xl:px-10 2xl:px-28 pb-4 md:pb-6 pt-3 md:pt-4 min-h-0">
+      <div className="flex-1 px-2 sm:px-4 md:px-6 xl:px-10 2xl:px-28 pb-4 md:pb-6 pt-3 md:pt-4 min-h-0 overflow-y-auto overscroll-contain">
         {/* Day names */}
         <div className="max-w-[1200px] mx-auto w-full grid grid-cols-7 text-[10px] sm:text-xs font-medium text-gray-500 mb-2">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (

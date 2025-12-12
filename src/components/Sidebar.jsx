@@ -531,19 +531,37 @@ function SidebarContent({
 
       {/* ACTION */}
       <div className="p-3 space-y-2">
-        <button
-          onClick={triggerNewChat}
+      <button
+        onClick={triggerNewChat}
+        className={[
+          "group w-full relative inline-flex items-center gap-2",
+          "px-3 py-2 text-sm text-gray-900 transition",
+        ].join(" ")}
+      >
+        {/* ✅ This is the white “bar” (bg/border/shadow). Fade it out when collapsed. */}
+        <motion.div
+          aria-hidden
           className={[
-            "w-full inline-flex items-center gap-2",
-            "rounded-lg border border-[var(--border)] bg-white shadow-sm",
-            "px-3 py-2 text-sm text-gray-900 hover:bg-gray-50 transition",
+            "pointer-events-none absolute inset-0 rounded-lg",
+            "border border-[var(--border)] bg-white shadow-sm",
+            "group-hover:bg-gray-50",
           ].join(" ")}
-        >
-          <div className="h-5 w-5 rounded-full bg-gray-900 text-white grid place-items-center">
-            <PlusIcon aria-hidden="true" />
-          </div>
-          {!collapsed && <span className="font-semibold text-[15px] leading-5">New chat</span>}
-        </button>
+          initial={false}
+          animate={{ opacity: collapsed ? 0 : 1 }}
+          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* Content stays visible */}
+        <div className="relative z-10 h-5 w-5 rounded-full bg-gray-900 text-white grid place-items-center">
+          <PlusIcon aria-hidden="true" />
+        </div>
+
+        {!collapsed && (
+          <span className="relative z-10 font-semibold text-[15px] leading-5">
+            New chat
+          </span>
+        )}
+      </button>
       </div>
 
       {/* LISTS */}
