@@ -770,6 +770,26 @@ function PanelAccount({ d }) {
         </div>
       </div>
 
+      {/* Dedicated business point of contact */}
+      <div>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+          Business contact
+        </h3>
+
+        <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+          <input
+            className="h-11 rounded-xl border border-gray-200 px-3 bg-gray-50 text-gray-700"
+            value="Clarkson Boerner"
+            readOnly
+          />
+          <input
+            className="h-11 rounded-xl border border-gray-200 px-3 bg-gray-50 text-gray-700"
+            value="clarkson@greatamericanlabor.com"
+            readOnly
+          />
+        </div>
+      </div>
+
       {/* Divider */}
       <div className="relative my-5 sm:my-8">
         <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200/80 to-transparent" />

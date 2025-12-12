@@ -1004,7 +1004,7 @@ export default function Sidebar({
         animate={{ width: desktopWidth }}
         transition={desktopTransition}
         className={[
-          "hidden xl:block md:sticky md:top-0 z-20 relative", // relative for overlay controls
+          "hidden 2xl:block md:sticky md:top-0 z-20 relative", // relative for overlay controls
           "h-[calc(100vh-56px)] border-r border-[var(--border)] bg-[var(--bg-rail)]",
           "overflow-hidden transform-gpu will-change-[width]",
         ].join(" ")}

@@ -68,7 +68,7 @@ function ChatRouteShell({
   }, [sessionId]);
 
   return (
-    <div className="h-full grid grid-cols-1 xl:grid-cols-[0px_minmax(0,1fr)_0px] 2xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
+    <div className="h-full grid grid-cols-1 2xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
@@ -113,7 +113,7 @@ function JobRouteShell({
   const { jobId } = useParams();
 
   return (
-    <div className="h-full grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
+    <div className="h-full grid grid-cols-1 2xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
@@ -591,7 +591,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setSidebarOpen(true)}
-                  className="xl:hidden inline-flex items-center h-9 px-3 rounded-full border border-gray-200 text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                  className="2xl:hidden inline-flex items-center h-9 px-3 rounded-full border border-gray-200 text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
                   aria-label="Open sidebar"
                 >
                   {/* “two lines” icon */}
