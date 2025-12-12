@@ -53,3 +53,34 @@ export const X = ({ size = 20 }) => (
   </svg>
 );
 
+export const UserCircle = ({ size = 20, ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
+    <circle
+      cx="12"
+      cy="12"
+      r="9"
+      stroke="currentColor"
+      strokeWidth="1.75"
+    />
+    <circle
+      cx="12"
+      cy="10"
+      r="3"
+      stroke="currentColor"
+      strokeWidth="1.75"
+    />
+    <path
+      d="M7.5 18c1.6-2.6 3.4-4 4.5-4s2.9 1.4 4.5 4"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

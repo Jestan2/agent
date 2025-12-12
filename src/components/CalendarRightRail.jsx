@@ -107,25 +107,33 @@ function formatHourLabel(h) {
   return `${hh} ${ampm}`;
 }
 
-/** “2:00 PM – 4:00 PM” in a given tz */
+/** “2:00 pm – 4:00 pm” in a given tz */
 function timeRangeLabel(start, end, tz) {
-  const fmt = (d) =>
-    new Intl.DateTimeFormat(undefined, {
+  const fmt = (d) => {
+    const s = new Intl.DateTimeFormat("en-US", {
       timeZone: tz,
       hour: "numeric",
       minute: "2-digit",
+      hour12: true,
+      hourCycle: "h12",
     }).format(d);
+    return s.replace("AM", "am").replace("PM", "pm");
+  };
+
   const endIsNextDay = end.getDate() !== start.getDate();
   return `${fmt(start)} – ${fmt(end)}${endIsNextDay ? " (next day)" : ""}`;
 }
 
-/** format single time in tz */
+/** format single time in tz (12h) */
 function fmtTimeTZ(d, tz) {
-  return new Intl.DateTimeFormat(undefined, {
+  const s = new Intl.DateTimeFormat("en-US", {
     timeZone: tz,
     hour: "numeric",
     minute: "2-digit",
+    hour12: true,
+    hourCycle: "h12",
   }).format(d);
+  return s.replace("AM", "am").replace("PM", "pm");
 }
 
 /** returns decimal hour 0..23.999 in tz */

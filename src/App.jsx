@@ -15,6 +15,7 @@ import CalendarView from "./components/CalendarView";
 import CalendarRightRail from "./components/CalendarRightRail";
 import { createChatSession } from "./lib/api";
 import BookingSuccess from "./components/BookingSuccess.jsx";
+import { UserCircle } from "./components/Icons";
 
 // Auth sheet
 import AuthSheet from "./components/AuthSheet";
@@ -663,21 +664,26 @@ export default function App() {
 
           {/* RIGHT CELL (Account on /calendar) -------------------- */}
           <div className="flex items-center justify-end pr-3 sm:pr-5">
-            {isCalendar && (
-              <button
-                type="button"
-                onClick={() => navigate("/account")}
-                className="
-                  inline-flex items-center h-9 px-4 rounded-full
-                  border border-gray-200 bg-white/70 text-[13px] font-medium text-gray-700
-                  hover:bg-gray-100 hover:text-gray-900 hover:border-gray-300
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
-                "
-                aria-label="Account"
-              >
-                Account
-              </button>
-            )}
+          {isCalendar && (
+            <button
+              type="button"
+              onClick={() => navigate("/account")}
+              className="
+                inline-flex items-center justify-center h-9 px-3 sm:px-4 rounded-full
+                border border-gray-200 bg-white/70 text-[13px] font-medium text-gray-700
+                hover:bg-gray-100 hover:text-gray-900 hover:border-gray-300
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300
+              "
+              aria-label="Account"
+              title="Account"
+            >
+              {/* Mobile: icon only */}
+              <UserCircle size={20} className="sm:hidden" aria-hidden="true" />
+
+              {/* sm+: text */}
+              <span className="hidden sm:inline">Account</span>
+            </button>
+          )}
           </div>
         </div>
       </header>
