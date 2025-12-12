@@ -68,7 +68,7 @@ function ChatRouteShell({
   }, [sessionId]);
 
   return (
-    <div className="h-full grid grid-cols-1 2xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
+    <div className="h-full grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
