@@ -1338,14 +1338,14 @@ function MobileSheet({
       {open && (
         <>
           <motion.div
-            className="xl:hidden fixed inset-0 bg-black/30 z-40"
+            className="2xl:hidden fixed inset-0 bg-black/30 z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpen(false)}
           />
           <motion.div
-            className="xl:hidden fixed inset-x-0 bottom-0 z-50"
+            className="2xl:hidden fixed inset-x-0 bottom-0 z-50"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -2195,7 +2195,7 @@ useEffect(() => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 4 }}
               transition={{ duration: 0.18 }}
-              className="hidden xl:flex flex-col border-l border-gray-200 bg-white sticky top-[56px] h-[calc(100dvh-56px)] overflow-y-auto overflow-x-hidden"
+              className="hidden 2xl:flex flex-col border-l border-gray-200 bg-white sticky top-[56px] h-[calc(100dvh-56px)] overflow-y-auto overflow-x-hidden"
             >
               <AnimatePresence mode="wait">
                 {showSkeleton ? (
@@ -2412,7 +2412,7 @@ useEffect(() => {
       )}
 
       {/* Mobile sheet (coupon UI kept desktop-only for now) */}
-      <div className="xl:hidden">
+      <div className="2xl:hidden">
         <AnimatePresence>
           {mounted && (
             <motion.div

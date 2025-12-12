@@ -68,7 +68,7 @@ function ChatRouteShell({
   }, [sessionId]);
 
   return (
-    <div className="h-full grid grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
+    <div className="h-full grid grid-cols-1 xl:grid-cols-[0px_minmax(0,1fr)_0px] 2xl:grid-cols-[280px_minmax(0,1fr)_360px] gap-x-6 overflow-hidden min-h-0">
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
@@ -76,8 +76,8 @@ function ChatRouteShell({
         setCollapsed={setSidebarCollapsed}
       />
 
-      <main className="flex overflow-hidden">
-        <div className="flex-1">
+      <main className="flex overflow-hidden min-w-0 min-h-0">
+        <div className="flex-1 min-w-0 min-h-0">
           <Chat key={chatKey} onRightRail={handleRightRail} />
         </div>
       </main>
@@ -121,8 +121,8 @@ function JobRouteShell({
         setCollapsed={setSidebarCollapsed}
       />
 
-      <main className="flex overflow-hidden">
-        <div className="flex-1">
+      <main className="flex overflow-hidden min-w-0 min-h-0">
+        <div className="flex-1 min-w-0 min-h-0">
           {/* JobActivity will fetch job + activity and call onRightRail(...) */}
           <JobActivity jobId={jobId} onRightRail={handleRightRail} />
         </div>

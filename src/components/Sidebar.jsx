@@ -772,7 +772,7 @@ export default function Sidebar({
   // Lock background scroll on small screens when open
   useEffect(() => {
     // Overlay mode = any width below xl (tablets + phones)
-    const isOverlayMode = () => window.matchMedia("(max-width: 1279.98px)").matches;
+    const isOverlayMode = () => window.matchMedia("(max-width: 1535.98px)").matches;
     if (open && isOverlayMode()) {
       document.documentElement.classList.add("overflow-hidden");
       document.body.classList.add("overflow-hidden");
@@ -1072,7 +1072,7 @@ export default function Sidebar({
           <>
             <motion.div
               key="sb-backdrop"
-              className="fixed inset-0 z-40 xl:hidden"
+              className="fixed inset-0 z-40 2xl:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -1091,7 +1091,7 @@ export default function Sidebar({
               role="dialog"
               aria-modal="true"
               aria-label="Sidebar"
-              className="fixed xl:hidden left-0 top-0 bottom-0 z-50 w-[min(88vw,380px)] border-r border-[var(--border)] bg-white shadow-2xl transform-gpu will-change-transform overflow-hidden"
+              className="fixed 2xl:hidden left-0 top-0 bottom-0 z-50 w-[min(88vw,380px)] border-r border-[var(--border)] bg-white shadow-2xl transform-gpu will-change-transform overflow-hidden"
               initial={{ x: -24, opacity: 0, filter: "blur(2px)" }}
               animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
               exit={{ x: -20, opacity: 0, filter: "blur(2px)" }}

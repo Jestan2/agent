@@ -331,7 +331,7 @@ function CalendarTimePicker({
 
   return (
     <div className="w-full flex justify-start">
-      <div className="max-w-[760px] w-full">
+      <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
           <div className="grid grid-cols-1 sm:grid-cols-2">
             {/* Left: Calendar */}
@@ -1397,7 +1397,7 @@ export default function Chat({ onRightRail }) {
   const AddressPicker = () =>
     !picker ? null : (
       <div className="w-full flex justify-start">
-        <div className="max-w-[760px] w-full">
+        <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
           <div className="bg-white rounded-2xl px-4 py-4 sm:px-5 sm:py-5 text-[15px] leading-relaxed border border-gray-200 shadow-sm">
             <div className="font-medium mb-2">Enter address</div>
             <GooglePlacesAddressInput
@@ -1441,7 +1441,7 @@ export default function Chat({ onRightRail }) {
     const remaining = maxLen - val.length;
     return (
       <div className="w-full flex justify-start">
-        <div className="max-w-[760px] w-full">
+        <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
           <div className="bg-white rounded-2xl px-4 py-4 sm:px-5 sm:py-5 text-[15px] leading-relaxed border border-gray-200 shadow-sm">
             <div className="font-medium mb-2">{label}</div>
             <div className="flex gap-2 items-center">
@@ -1508,7 +1508,7 @@ export default function Chat({ onRightRail }) {
 
     return (
       <div className="w-full flex justify-start">
-        <div className="max-w-[760px] w-full">
+        <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
           <div className="bg-white rounded-2xl px-4 py-4 sm:px-5 sm:py-5 text-[15px] leading-relaxed border border-gray-200 shadow-sm">
             <div className="font-medium mb-2">On-site phone number</div>
             <div className="flex gap-2 items-center">
@@ -1606,7 +1606,7 @@ export default function Chat({ onRightRail }) {
       <div className="relative">
         {!isLanding && (
           <div ref={progressRef} className="sticky top-0 z-20">
-            <div className="max-w-[760px] mx-auto px-4">
+            <div className="max-w-[760px] 2xl:max-w-[920px] mx-auto px-4">
               <JobSummary state={state} quoteCard={quoteCard} />
             </div>
           </div>
@@ -1626,14 +1626,14 @@ export default function Chat({ onRightRail }) {
               : "calc(100dvh - 180px)",
           }}
         >
-          <div className="max-w-[760px] mx-auto">
+          <div className="max-w-[760px] 2xl:max-w-[920px] mx-auto">
             {isLanding ? (
               <div className="w-full min-h-[var(--viewportH)] flex flex-col items-center justify-center px-4 -translate-y-[clamp(0px,4.25vh,50px)]">
                 <h1 className="text-[28px] sm:text-[32px] font-semibold text-center mb-6">
                   {headline}
                 </h1>
 
-                <form onSubmit={submitLanding} className="w-full max-w-[680px]">
+                <form onSubmit={submitLanding} className="w-full max-w-[680px] 2xl:max-w-[860px]">
                   <div className="relative rounded-xl border border-gray-200 bg-white shadow-sm">
                     <textarea
                       value={landingInput}
@@ -1661,7 +1661,7 @@ export default function Chat({ onRightRail }) {
                     if (m.who === "assistant") {
                       return (
                         <div key={`h-a-${i}`} className="w-full flex justify-start">
-                          <div className="max-w-[760px] w-full">
+                          <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
                             <div className="bg-white rounded-2xl px-4 py-2 text-[16px] leading-relaxed border border-transparent">
                               <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
@@ -1676,7 +1676,7 @@ export default function Chat({ onRightRail }) {
                     }
                     return (
                       <div key={`h-u-${i}`} className="w-full flex justify-end">
-                        <div className="max-w-[760px]">
+                        <div className="max-w-[760px] 2xl:max-w-[920px]">
                           <div className="bg-gray-100 rounded-2xl px-4 py-3 text-[15px] leading-relaxed text-gray-900 border border-gray-200">
                             {m.text}
                           </div>
@@ -1693,9 +1693,9 @@ export default function Chat({ onRightRail }) {
                     className="mt-4"
                     style={{ "--userH": `${userH}px` }}
                   >
-                    <div ref={userBubbleRef} className="pt-2 z-10 xl:sticky xl:top-0">
+                    <div ref={userBubbleRef} className="pt-2 z-10 2xl:sticky 2xl:top-0">
                       <div className="w-full flex justify-end">
-                        <div className="max-w-[760px]">
+                        <div className="max-w-[760px] 2xl:max-w-[920px]">
                           <div className="bg-gray-100 rounded-2xl px-4 py-3 mt-3 text-[15px] leading-relaxed text-gray-900 border border-gray-200">
                             {activeUserMsg.text}
                           </div>
@@ -1705,7 +1705,7 @@ export default function Chat({ onRightRail }) {
 
                     <div className="min-h-[calc(var(--viewportH)-var(--userH))] overflow-y-auto">
                       <div className="w-full flex justify-start">
-                        <div className="max-w-[760px] w-full">
+                        <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
                           <div className="bg-white rounded-2xl px-4 py-10 text-[16px] sm:text-[17px] leading-relaxed border border-transparent">
                             <ReactMarkdown
                               remarkPlugins={[remarkGfm]}
@@ -1774,7 +1774,7 @@ export default function Chat({ onRightRail }) {
                       {picker &&
                         ["date", "start_time"].includes(picker.type) && (
                           <div className="w-full flex justify-start">
-                            <div className="max-w-[760px] w-full">
+                            <div className="max-w-[760px] 2xl:max-w-[920px] w-full">
                               <div className="bg-white rounded-2xl px-4 py-3 text-[15px] leading-relaxed border border-gray-200">
                                 <div className="font-medium mb-2">
                                   {picker.type === "date"
@@ -1919,7 +1919,7 @@ export default function Chat({ onRightRail }) {
             sendUserMessage(input);
           }}
         >
-          <div className="max-w-[760px] mx-auto px-4">
+          <div className="max-w-[760px] 2xl:max-w-[920px] mx-auto px-4">
             <div>
               <div className="relative rounded-xl border border-gray-200 bg-white shadow-sm px-3 py-3 pr-14">
                 <textarea
@@ -1946,7 +1946,7 @@ export default function Chat({ onRightRail }) {
             </div>
 
             {/* Mobile: "View details" — Ghost with divider */}
-            <div className="xl:hidden mt-3">
+            <div className="2xl:hidden mt-3">
               <div className="mx-auto w-full max-w-[560px] border-t border-gray-200" />
               <div className="mt-2 flex justify-center">
                 <button
