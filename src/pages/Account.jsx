@@ -32,6 +32,17 @@ const whenFromISO = (iso) => {
   return `${date} @ ${time}`;
 };
 
+const BUSINESS_CONTACT = {
+  name: "Clarkson Boerner",
+  email: "clarkson@greatamericanlabor.com",
+};
+
+const SectionDivider = ({ className = "" }) => (
+  <div className={`relative my-5 sm:my-8 ${className}`}>
+    <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200/80 to-transparent" />
+  </div>
+);
+
 // Buttons (larger touch targets on mobile, same visuals on desktop)
 const BTN = {
   primary:
@@ -729,6 +740,27 @@ function PanelAccount({ d }) {
           </div>
         </div>
 
+        <SectionDivider />
+
+        <div>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+            Business contact
+          </h3>
+
+          <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+            <input
+              className="h-11 rounded-xl border border-gray-200 px-3 bg-gray-50 text-gray-700"
+              value={BUSINESS_CONTACT.name}
+              readOnly
+            />
+            <input
+              className="h-11 rounded-xl border border-gray-200 px-3 bg-gray-50 text-gray-700"
+              value={BUSINESS_CONTACT.email}
+              readOnly
+            />
+          </div>
+        </div>
+
         <div className="rounded-2xl border border-dashed border-gray-300 p-4 sm:p-5 text-sm text-gray-600">
           Billing is managed by an admin on your team.
         </div>
@@ -769,7 +801,7 @@ function PanelAccount({ d }) {
           </button>
         </div>
       </div>
-
+      <SectionDivider />
       {/* Dedicated business point of contact */}
       <div>
         <h3 className="text-base sm:text-lg font-semibold text-gray-900">
@@ -779,21 +811,18 @@ function PanelAccount({ d }) {
         <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
           <input
             className="h-11 rounded-xl border border-gray-200 px-3 bg-gray-50 text-gray-700"
-            value="Clarkson Boerner"
+            value={BUSINESS_CONTACT.name}
             readOnly
           />
           <input
             className="h-11 rounded-xl border border-gray-200 px-3 bg-gray-50 text-gray-700"
-            value="clarkson@greatamericanlabor.com"
+            value={BUSINESS_CONTACT.email}
             readOnly
           />
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="relative my-5 sm:my-8">
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200/80 to-transparent" />
-      </div>
+      <SectionDivider />
 
       {/* Payments */}
       <div>
