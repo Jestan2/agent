@@ -128,7 +128,7 @@ function PhoneVerifyUS({ value, setValue, onSend, onVerify, note, recaptchaId })
         </div>
 
         <input
-          placeholder="(555) 555-5555"
+          placeholder="(888) 888-8888"
           className={`h-11 rounded-xl border px-3 w-full ${error ? "border-red-300" : "border-gray-200"}`}
           value={formatUS(value)}
           onChange={onChange}
@@ -621,7 +621,7 @@ export default function AuthSheet({ open, onClose, resumeAction = null, onComple
                       <div>
                         <input
                           required
-                          placeholder="(555) 555-5555"
+                          placeholder="(888) 888-8888"
                           className={`w-full rounded-xl border px-3 py-2 ${extraPhoneErr ? "border-red-300" : "border-gray-200"}`}
                           value={formatUS(extraPhone)}
                           onChange={(e) => setExtraPhone(onlyDigits(e.target.value).slice(0, 10))}
@@ -688,7 +688,29 @@ export default function AuthSheet({ open, onClose, resumeAction = null, onComple
                           </svg>
                         )}
                       </span>
-                      <span>I accept the Terms and Privacy Policy.</span>
+                      <span>
+                      I accept the{" "}
+                      <a
+                        href="https://greatamericanlabor.com/terms-of-service"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-gray-800 no-underline visited:text-gray-800"
+                      >
+                        Terms
+                      </a>{" "}
+                      and{" "}
+                      <a
+                        href="https://greatamericanlabor.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-gray-800 no-underline visited:text-gray-800"
+                      >
+                        Privacy Policy
+                      </a>
+                      .
+                    </span>
                     </label>
 
                     {err && <div className="text-sm text-red-600">{err}</div>}
