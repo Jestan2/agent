@@ -106,7 +106,7 @@ function AccountAdminSkeleton() {
         </div>
       </div>
 
-      <div className="my-6 sm:my-8 h-px bg-gray-200/80" />
+      <SectionDivider className="my-6 sm:my-8" />
 
       <div>
         <div className="flex items-center justify-between gap-3">
