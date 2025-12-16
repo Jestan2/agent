@@ -643,7 +643,7 @@ export default function JobActivityModernB({ jobId, onRightRail }) {
           } else if (typeof value === "string") {
             const parsed = parseOneLineUsAddress(value);
             if (!parsed) {
-              alert("Enter address as: 123 Main St, City, ST 12345");
+              alert( "We couldn’t verify that address. Please enter a complete US address with street, city, state, and ZIP. If you need help updating your booking, call 888-354-9934.");
               return;
             }
             addrObj = parsed;
