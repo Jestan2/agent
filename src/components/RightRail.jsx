@@ -1303,6 +1303,18 @@ function MobileSheet({
   onCancel,
   loading = false,
   showLockNotice = false,
+
+  // ✅ NEW: coupon props (so mobile can render the same CouponCard)
+  canCoupon,
+  appliedCoupon,
+  couponInput,
+  couponLoading,
+  couponError,
+  couponSuccess,
+  couponDiscountCents,
+  onCouponChange,
+  onApplyCoupon,
+  onRemoveCoupon,
 }) {
   // Start closed; only open via explicit event
   const [open, setOpen] = useState(false);
@@ -1450,6 +1462,22 @@ function MobileSheet({
                             )}
                         </AnimatePresence>
                       </div>
+                      {canCoupon ? (
+                        <div className="mt-4">
+                          <CouponCard
+                            canCoupon={canCoupon}
+                            appliedCoupon={appliedCoupon}
+                            couponInput={couponInput}
+                            couponLoading={couponLoading}
+                            couponError={couponError}
+                            couponSuccess={couponSuccess}
+                            couponDiscountCents={couponDiscountCents}
+                            onChange={onCouponChange}
+                            onApply={onApplyCoupon}
+                            onRemove={onRemoveCoupon}
+                          />
+                        </div>
+                      ) : null}
 
                       <div className="bg-white rounded-2xl border border-gray-200 p-4 mt-4">
                         <div className="text-[13px] font-semibold text-[#04193b] mb-3">
@@ -2438,6 +2466,19 @@ useEffect(() => {
                 onCancel={handleCancelJob}
                 loading={showSkeleton}
                 showLockNotice={jobMode && uiLock}
+
+                
+                /* ✅ NEW: coupon support on all < 2xl screens */
+                canCoupon={canCoupon}
+                appliedCoupon={appliedCoupon}
+                couponInput={couponInput}
+                couponLoading={couponLoading}
+                couponError={couponError}
+                couponSuccess={couponSuccess}
+                couponDiscountCents={couponDiscountCents}
+                onCouponChange={onCouponChange}
+                onApplyCoupon={handleApplyCoupon}
+                onRemoveCoupon={handleRemoveCoupon}
               />
             </motion.div>
           )}
