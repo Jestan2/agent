@@ -823,7 +823,7 @@ export default function JobActivityModernB({ jobId, onRightRail }) {
 
     {/* Mobile sticky footer: matches Chat “Confirm & Book” */}
     <div className="2xl:hidden sticky bottom-0 left-0 right-0 z-10">
-      <div className="bg-gradient-to-t from-white via-white/90 to-transparent">
+      <div className="bg-white">
         <div className="mx-auto w-full max-w-[760px] px-4 pt-2 pb-[max(env(safe-area-inset-bottom),12px)]">
           <div className="mx-auto w-full max-w-[560px] border-t border-gray-200" />
           <div className="mt-2 flex justify-center">
