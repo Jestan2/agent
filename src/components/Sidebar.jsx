@@ -480,12 +480,19 @@ function SidebarContent({
             collapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100 translate-x-0",
           ].join(" ")}
         >
+        <a
+          href="https://www.greatamericanlabor.com/"
+          onClick={() => closeMobile?.()}
+          className="inline-flex items-center"
+          aria-label="Go to Great American Labor"
+        >
           <img
             src={logoUSA}
             alt="The Great American Labor Co. logo"
             className="h-5 md:h-6 w-auto block select-none shrink-0"
             draggable="false"
           />
+        </a>
         </div>
 
         <div className="ml-auto inline-flex items-center gap-1">
