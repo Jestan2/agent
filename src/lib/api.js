@@ -846,3 +846,30 @@ export async function membershipsSetRole(getIdToken, { uid, role }) {
   });
   return handle(res); // return { ok: true, uid, role }
 }
+
+export async function billingValidateCard(getIdToken, body) {
+  const hdrs = await authHeader(getIdToken, null, { required: true });
+
+  const res = await fetch(`${API_BASE}/v1/billing/validate-card`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...hdrs,
+    },
+    body: JSON.stringify(body),
+  });
+
+  let data = {};
+  try { data = await res.json(); } catch {}
+
+  if (!res.ok) {
+    const detail = data?.detail || data || {};
+    const err = new Error(detail?.message || "Card not accepted.");
+    err.code = detail?.code;
+    err.funding = detail?.funding;
+    err.status = res.status;
+    throw err;
+  }
+
+  return data;
+}

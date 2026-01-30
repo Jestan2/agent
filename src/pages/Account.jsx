@@ -13,6 +13,7 @@ import {
   setDefaultPM,
   deletePM,
   createSetupIntent,
+  billingValidateCard,
   billingRefresh as refreshStripeStatus,
   fetchJobHistory,
   membershipsInvite,
@@ -247,10 +248,23 @@ function AddCardForm({ user, onDone }) {
     try {
       setBusy(true);
       setErr("");
+
       const { client_secret } = await createSetupIntent(() => user.getIdToken());
       const card = elements.getElement(CardElement);
-      const { error } = await stripe.confirmCardSetup(client_secret, { payment_method: { card } });
+
+      const { error, setupIntent } = await stripe.confirmCardSetup(client_secret, {
+        payment_method: { card },
+      });
       if (error) throw error;
+
+      const pmid = setupIntent?.payment_method;
+      if (!pmid) throw new Error("Could not read payment method.");
+
+      await billingValidateCard(() => user.getIdToken(), {
+        payment_method_id: pmid,
+        reject_unknown: true,
+      });
+
       await refreshStripeStatus(() => user.getIdToken());
       onDone?.({ ok: true });
     } catch (e) {

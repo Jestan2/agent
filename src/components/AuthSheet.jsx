@@ -11,6 +11,7 @@ import {
   getAccountStatus,
   customersProfile,
   createSetupIntent,
+  billingValidateCard,
   billingRefresh as refreshStripeStatus, // alias to match API
   membershipsInit,
 } from "../lib/api";
@@ -186,14 +187,29 @@ function AddCardForm({ user, onComplete, onClose }) {
     try {
       setBusy(true);
       setErr("");
+
       // 1) Create SetupIntent
       const { client_secret } = await createSetupIntent(() => user.getIdToken());
+
       // 2) Confirm with CardElement
       const card = elements.getElement(CardElement);
-      const { error } = await stripe.confirmCardSetup(client_secret, { payment_method: { card } });
+      const { error, setupIntent } = await stripe.confirmCardSetup(client_secret, {
+        payment_method: { card },
+      });
       if (error) throw error;
+
+      // 2.5) Validate card type (reject prepaid / unknown)
+      const pmid = setupIntent?.payment_method;
+      if (!pmid) throw new Error("Could not read payment method.");
+
+      await billingValidateCard(() => user.getIdToken(), {
+        payment_method_id: pmid,
+        reject_unknown: true,
+      });
+
       // 3) Refresh backend flags
       await refreshStripeStatus(() => user.getIdToken());
+
       // 4) Notify parent + close
       try {
         onComplete?.({ type: "card_added" });
